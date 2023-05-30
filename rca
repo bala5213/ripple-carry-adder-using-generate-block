@@ -1,0 +1,41 @@
+module rca (
+  input [7:0] a,
+  input [7:0] b,
+  output [7:0] sum,
+  output cout_final,
+  input cinbar
+);
+
+wire[8:0] cin; 
+wire [7:0] cout;
+  genvar p;
+
+assign cin[0]=cinbar;
+  generate
+
+
+    for (p = 0; p < 8; p = p + 1) 
+	begin : raclp
+        
+      fulladder gate(a[p], b[p], cin[p], sum[p], cout[p]);
+assign cin[p+1]=cout[p];
+	
+    end
+assign cout_final = cout[7];
+
+  endgenerate
+
+endmodule
+
+
+
+module fulladder (input a,b,cin, output sum,cout);
+
+wire t1,t2,t3;
+xor g1(sum,a,b,cin);
+and g2(t1,a,b);
+and g3(t2,b,cin);
+and g4(t3,cin,a);
+or g5(cout,t1,t2,t3);
+
+endmodule
